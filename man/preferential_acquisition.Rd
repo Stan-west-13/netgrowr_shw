@@ -36,5 +36,5 @@ Compute preferential acquisition values
 2. Hills, T. T., Maouene, M., Maouene, J., Sheya, A., & Smith, L. (2009). Longitudinal analysis of early semantic networks: Preferential attachment or preferential acquisition? Psychological science, 20(6), 729-739. doi:10.1111/j.1467-9280.2009.02365.x
 }
 \seealso{
-\code{\link[netgrowr]{GrowthValue}}, \code{\link[netgrowr]{PreferentialAttachment}}, \code{\link[netgrowr]{LureOfTheAssociates}}, \code{\link[netgrowr]{opsahl_weighted_degree}}
+\code{\link[netgrowr]{growth_value}}, \code{\link[netgrowr]{lure_of_the_associates}}, \code{\link[netgrowr]{preferential_attachment}}, \code{\link[netgrowr]{opsahl_weighted_degree}}
 }

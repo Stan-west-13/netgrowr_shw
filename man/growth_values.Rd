@@ -49,5 +49,5 @@ Compute growth values based on network structure
 1. Opsahl, T., Agneessens, F., & Skvoretz, J. (2010). Node centrality in weighted networks: Generalizing degree and shortest paths. Social Networks, 32(3), 245-251. doi:https://doi.org/10.1016/j.socnet.2010.03.006
 }
 \seealso{
-\code{\link[netgrowr]{PreferentialAttachment}}, \code{\link[netgrowr]{LureOfTheAssociates}}, \code{\link[netgrowr]{PreferentialAcquisition}}, \code{\link[netgrowr]{opsahl_weighted_degree}}
+\code{\link[netgrowr]{preferential_attachment}}, \code{\link[netgrowr]{lure_of_the_associates}}, \code{\link[netgrowr]{preferential_acquisition}}, \code{\link[netgrowr]{opsahl_weighted_degree}}
 }
