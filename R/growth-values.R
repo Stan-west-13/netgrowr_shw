@@ -83,7 +83,7 @@ growth_values <- function(net, aoa_tbl, growth_models = "all", weighted = FALSE,
 #' Growth value is the mean degree of the known words that the new word
 #' attached to [2].
 #'
-#' @seealso \code{\link[netgrowr]{growth_value}}, \code{\link[netgrowr]{lure_of_the_associates}}, \code{\link[netgrowr]{preferential_acquisition}}, \code{\link[netgrowr]{opsahl_weighted_degree}}
+#' @seealso \code{\link[netgrowr]{growth_values}}, \code{\link[netgrowr]{lure_of_the_associates}}, \code{\link[netgrowr]{preferential_acquisition}}, \code{\link[netgrowr]{opsahl_weighted_degree}}
 #'
 #' @references
 #' 1. Opsahl, T., Agneessens, F., & Skvoretz, J. (2010). Node centrality in weighted networks: Generalizing degree and shortest paths. Social Networks, 32(3), 245-251. doi:https://doi.org/10.1016/j.socnet.2010.03.006
@@ -133,7 +133,7 @@ preferential_attachment <- function(net, known, weighted = FALSE, alpha = 0.5) {
 #' Growth value is the degree of the word with respect to links from known words at
 #' the time of acquisition [2].
 #'
-#' @seealso \code{\link[netgrowr]{growth_value}}, \code{\link[netgrowr]{preferential_attachment}}, \code{\link[netgrowr]{preferential_acquisition}}, \code{\link[netgrowr]{opsahl_weighted_degree}}
+#' @seealso \code{\link[netgrowr]{growth_values}}, \code{\link[netgrowr]{preferential_attachment}}, \code{\link[netgrowr]{preferential_acquisition}}, \code{\link[netgrowr]{opsahl_weighted_degree}}
 #'
 #' @references
 #'   1. Opsahl, T., Agneessens, F., & Skvoretz, J. (2010). Node centrality in weighted networks: Generalizing degree and shortest paths. Social Networks, 32(3), 245-251. doi:https://doi.org/10.1016/j.socnet.2010.03.006
@@ -179,7 +179,7 @@ lure_of_the_associates <- function(net, known, weighted = FALSE, alpha = 0.5) {
 #'
 #' Growth value is the degree of the word in the presumed learning environment.
 #'
-#' @seealso \code{\link[netgrowr]{growth_value}}, \code{\link[netgrowr]{lure_of_the_associates}}, \code{\link[netgrowr]{preferential_attachment}}, \code{\link[netgrowr]{opsahl_weighted_degree}}
+#' @seealso \code{\link[netgrowr]{growth_values}}, \code{\link[netgrowr]{lure_of_the_associates}}, \code{\link[netgrowr]{preferential_attachment}}, \code{\link[netgrowr]{opsahl_weighted_degree}}
 #'
 #' @references
 #' 1. Opsahl, T., Agneessens, F., & Skvoretz, J. (2010). Node centrality in weighted networks: Generalizing degree and shortest paths. Social Networks, 32(3), 245-251. doi:https://doi.org/10.1016/j.socnet.2010.03.006

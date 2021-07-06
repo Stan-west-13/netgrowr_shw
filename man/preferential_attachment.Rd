@@ -37,5 +37,5 @@ Compute preferential attachment values
 2. Steyvers, M., & Tenenbaum, J. B. (2005). The large‐scale structure of semantic networks: Statistical analyses and a model of semantic growth. Cognitive science, 29(1), 41-78.
 }
 \seealso{
-\code{\link[netgrowr]{growth_value}}, \code{\link[netgrowr]{lure_of_the_associates}}, \code{\link[netgrowr]{preferential_acquisition}}, \code{\link[netgrowr]{opsahl_weighted_degree}}
+\code{\link[netgrowr]{growth_values}}, \code{\link[netgrowr]{lure_of_the_associates}}, \code{\link[netgrowr]{preferential_acquisition}}, \code{\link[netgrowr]{opsahl_weighted_degree}}
 }
