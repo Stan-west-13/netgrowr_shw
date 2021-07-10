@@ -11,13 +11,31 @@
 #' @param split_by A string referencing a variable in \code{data} that encodes
 #'   time steps; see details.
 #' @param label_with A string referencing a variable in \code{data} that
-#'   provides node-labels.
+#'   provides node-labels. Labels may repeat across time steps specified by
+#'   \code{split_by}.
 #' @param B0 An initial estimate of the model parameters. If \code{NULL}, an
 #'   initial model will be estimated through a brute force optimization.
 #'   [default: NULL]
-#' @return  A list as returned by \code{\link[stats]{optim}}, with the following additional fields:
-#' \item{p}{A vector of estimated probabilities for each node acquired over all timepoints.}
-#' \item{nobs}{The number of nodes for which a probability wsa estimated.}
+#' @return  A list as of class \code{mle_network_growth} with the following fields:
+#' \item{coefficients}{Best fit model parameters}
+#' \item{negLogLik}{The model negative log-likelihood.}
+#' \item{fitted.values}{A vector of estimated probabilities for each node acquired over all timepoints.}
+#' \item{nobs}{The number of fitted values}
+#' \item{call}{The function call that generated the model}
+#' \item{model}{The model frame referenced when fitting the model.}
+#' \item{deviance}{The likelihood ratio between a fully saturated model and the current model}
+#' \item{counts}{A two-element integer vector giving the number of calls to objective function and gradient function respectively. This excludes those calls needed to compute the Hessian, if requested, and any calls to the objective function to compute a finite-difference approximation to the gradient. This is returned by \code{\link[stats]{optim}}.}
+#' \item{convergence}{An integer code:
+#'     \describe{
+#'         \item{0}{successful completion (which is always the case for "SANN" and "Brent").}
+#'         \item{1}{indicates that the iteration limit maxit had been reached.}
+#'         \item{10}{indicates degeneracy of the Nelder–Mead simplex.}
+#'         \item{51}{indicates a warning from the "L-BFGS-B" method; see component message for further details.}
+#'         \item{52}{indicates an error from the "L-BFGS-B" method; see component message for further details.}
+#'     }
+#' }
+#' \item{message}{A character string giving any additional information returned by the optimizer, or NULL.}
+#' \item{hessian}{Only included if argument \code{hessian} is true. A symmetric matrix giving an estimate of the Hessian at the solution found. Note that this is the Hessian of the unconstrained problem even if the box constraints are active.}
 #'
 #' @details
 #' The formula must reference a variable that encodes the time-point at which
@@ -194,7 +212,8 @@ ratio_of_strengths <- function(data, formula, beta) {
 #' @param split_by A string referencing a variable in \code{data} that encodes
 #'   time steps; see details.
 #' @param label_with A string referencing a variable in \code{data} that
-#'   provides node-labels.
+#'   provides node-labels. Labels may repeat across time steps specified by
+#'   \code{split_by}.
 #' @return A numeric vector or matrix; see details.
 #'
 #' @details
@@ -221,8 +240,7 @@ ratio_of_strengths <- function(data, formula, beta) {
 #' @seealso \code{\link[netgrowr]{ratio_of_strengths}}
 #'
 probability_node_added <- function(beta, formula, data, split_by, label_with = NULL) {
-    f <- update(formula, trimws(paste("~.", split_by, label_with, sep = "+"), which = "right", whitespace = "\\+"))
-    d <- na.omit(get_all_vars(f, data))
+    d <- na.omit(get_all_vars_with_split_and_labels(formula, split_by, label_with, data))
     d$learned <- d[[1]] == d[[split_by]]
     d$unknown <- d[[1]] >= d[[split_by]]
     X <- split(d, d[[split_by]])
@@ -232,7 +250,6 @@ probability_node_added <- function(beta, formula, data, split_by, label_with = N
                 return(x)
             })
     }
-    f <- update
     p <- do.call("rbind", lapply(X, netgrowr:::ratio_of_strengths, beta = beta, formula = formula))
     if (ncol(p) == 1) {
         labs <- rownames(p)
@@ -252,4 +269,60 @@ probability_node_added <- function(beta, formula, data, split_by, label_with = N
 nterms <- function(formula) {
     x <- terms(formula)
     return(length(attr(x, "term.labels")) + attr(x, "intercept"))
+}
+
+#' Return model frame with split and and label variables
+#'
+#' Written to handle the case where either split or labels are not provided.
+#'
+#' @param formula a formula
+#' @param split_by A string referencing a variable in \code{data} that encodes
+#'   time steps; see details for \code{\link[netgrowr]{mle_network_growth}}.
+#' @param label_with A string referencing a variable in \code{data} that
+#'   provides node-labels. Labels may repeat across time steps specified by
+#'   \code{split_by}.
+#' @param data A data frame containing, at least, the variables implied by the
+#'   formula.
+#' @return The model frame
+model_frame_with_split_and_labels <- function(formula, split_by, label_with, data) {
+    f <- formula_with_split_and_labels(formula, split_by, label_with)
+    return(model.frame(f, data))
+}
+
+#' Return variables from fromula with split and and label variables
+#'
+#' Written to handle the case where either split or labels are not provided.
+#'
+#' @param formula a formula
+#' @param split_by A string referencing a variable in \code{data} that encodes
+#'   time steps; see details for \code{\link[netgrowr]{mle_network_growth}}.
+#' @param label_with A string referencing a variable in \code{data} that
+#'   provides node-labels. Labels may repeat across time steps specified by
+#'   \code{split_by}.
+#' @param data A data frame containing, at least, the variables implied by the
+#'   formula.
+#' @return The model frame, without transformations implied in the formula.
+get_all_vars_with_split_and_labels <- function(formula, split_by, label_with, data) {
+    f <- formula_with_split_and_labels(formula, split_by, label_with)
+    return(get_all_vars(f, data))
+}
+
+#' Return model frame with split and and label variables
+#'
+#' Written to handle the case where either split or labels are not provided.
+#'
+#' @param formula a formula
+#' @param split_by A string referencing a variable in \code{data} that encodes
+#'   time steps; see details for \code{\link[netgrowr]{mle_network_growth}}.
+#' @param label_with A string referencing a variable in \code{data} that
+#'   provides node-labels. Labels may repeat across time steps specified by
+#'   \code{split_by}.
+#' @return A formula with split and label variables appended.
+formula_with_split_and_labels <- function(formula, split_by, label_with) {
+    f <- formula
+    if (!is.null(split_by))
+        f <- update(f, paste("~.", split_by, sep = "+"))
+    if (!is.null(label_with))
+        f <- update(f, paste("~.", label_with, sep = "+"))
+    return(f)
 }

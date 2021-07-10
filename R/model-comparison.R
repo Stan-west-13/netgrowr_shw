@@ -1,7 +1,7 @@
 #' Compare two models with likelihood ratio test
 #'
-#' @param full list object associated with the full model.
-#' @param restricted list object associated with the restricted (i.e., nested) model.
+#' @param full list object with class \code{\link[netgrowr]{mle_network_growth}} associated with the full model.
+#' @param restricted list object with class \code{\link[netgrowr]{mle_network_growth}} associated with the restricted (i.e., nested) model.
 #' @return A named vector with the following values:
 #' \item{p}{One-tailed probability that the likelihood ratio is sampled from a
 #' chi-square distribution with \code{df} degrees of freedom centered on zero or

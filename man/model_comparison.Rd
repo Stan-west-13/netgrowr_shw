@@ -7,9 +7,9 @@
 model_comparison(full, restricted)
 }
 \arguments{
-\item{full}{list object associated with the full model.}
+\item{full}{list object with class \code{\link[netgrowr]{mle_network_growth}} associated with the full model.}
 
-\item{restricted}{list object associated with the restricted (i.e., nested) model.}
+\item{restricted}{list object with class \code{\link[netgrowr]{mle_network_growth}} associated with the restricted (i.e., nested) model.}
 }
 \value{
 A named vector with the following values:

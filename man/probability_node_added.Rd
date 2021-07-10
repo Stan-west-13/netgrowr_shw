@@ -19,7 +19,8 @@ formula.}
 time steps; see details.}
 
 \item{label_with}{A string referencing a variable in \code{data} that
-provides node-labels.}
+provides node-labels. Labels may repeat across time steps specified by
+\code{split_by}.}
 }
 \value{
 A numeric vector or matrix; see details.
