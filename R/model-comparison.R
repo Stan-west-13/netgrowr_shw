@@ -15,16 +15,18 @@
 #'
 #' @export
 model_comparison <- function(full, restricted) {
-    df <- length(full$par) - length(restricted$par)
-    chisq <- likelihood_ratio(full$value, restricted$value)
+    assertthat::are_equal(full$nobs, restricted$nobs)
+    df <- length(coef(full)) - length(coef(restricted))
+    chisq <- likelihood_ratio(full$negLogLik, restricted$negLogLik)
     pval <- pchisq(chisq, df = df, lower.tail = FALSE)
     BIC <- bayesian_information_criterion(chisq, df, full$nobs)
     return(c(
-        p = pval,
         df = df,
-        L0 = restricted$value,
-        L1 = full$value,
+        nobs = full$nobs,
+        L0 = restricted$negLogLik,
+        L1 = full$negLogLik,
         chisq = chisq,
+        p = pval,
         BIC = BIC
     ))
 }

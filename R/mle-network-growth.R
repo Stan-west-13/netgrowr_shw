@@ -66,9 +66,25 @@ mle_network_growth <- function(formula, data, split_by, label_with, B0 = NULL) {
         B0 <- bruteforce_optim(formula, data, split_by = split_by, R = 1e4)
     }
     M <- gradient_optim(formula, data, B0, split_by = split_by)
-    p <- probability_node_added(M$par, formula, data, split_by = split_by, label_with = label_with)
-    M$p <- p
+    names(M)[names(M) == "value"] <- "negLogLik"
+    names(M)[names(M) == "par"] <- "coefficients"
+    names(M$coefficients) <- if (attr(terms(formula), "intercept")) {
+        c("(intercept)", attr(terms(formula), "term.labels"))
+    } else {
+         attr(terms(formula), "term.labels")
+    }
+    p <- probability_node_added(coef(M), formula, data, split_by = split_by, label_with = label_with)
+    M$fitted.values <- p
     M$nobs <- length(p)
+    M$call <- match.call()
+    M$model <- model_frame_with_split_and_labels(formula, split_by, label_with, data)
+    learned <- M$model[[1]] == M$model[[split_by]]
+    p_star <- unlist(lapply(
+        split(learned[learned], M$model[[split_by]][learned]),
+        function(x) x / sum(x)
+    ))
+    M$deviance <- likelihood_ratio(-loglikelihood(p_star), -loglikelihood(p))
+    attr(M, "class") <- "mle_network_growth"
     return(M)
 }
 
