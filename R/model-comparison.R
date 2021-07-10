@@ -8,6 +8,7 @@
 #' less.}
 #' \item{df}{The degrees of freedom of the statistical test; the difference in
 #' the number of parameters between the nested models.}
+#' \item{nobs}{The number of examples used to fit the models; the number of fitted.values for each model (which must be the same).}
 #' \item{L0}{The negative log-likelihood of the restricted model.}
 #' \item{L1}{The negative log-likelihood of the full model.}
 #' \item{chisq}{The chi-square value of the likelihood ratio.}
