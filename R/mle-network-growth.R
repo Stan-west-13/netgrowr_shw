@@ -88,6 +88,32 @@ mle_network_growth <- function(formula, data, split_by, label_with, B0 = NULL) {
     return(M)
 }
 
+#' @method print mle_network_growth
+#' @export
+print.mle_network_growth <- function(x, digits = max(3L, getOption("digits") - 3L)) {
+    cat("\nCall:\n", paste(deparse(x$call), sep = "\n",
+                           collapse = "\n"), "\n\n", sep = "")
+    if (length(coef(x))) {
+        cat("Coefficients:\n")
+        print.default(format(coef(x), digits = digits), print.gap = 2L,
+                      quote = FALSE)
+    } else {
+        cat("No coefficients\n")
+    }
+    cat("\n")
+    performance <- c(
+        "negative log-likelihood" = x$negLogLik,
+        "deviance" = x$deviance
+    )
+    cat("Performance:\n")
+    print.default(format(performance, digits = digits), print.gap = 2L,
+                  quote = FALSE)
+    cat("\n")
+    cat("Number of observations:", x$nobs, "\n")
+    cat("\n")
+    invisible(x)
+}
+
 #' Log likelihood
 #'
 #' @param p A vector or matrix of probabilities; see details.
