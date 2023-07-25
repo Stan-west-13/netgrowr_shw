@@ -231,7 +231,7 @@ gradient_optim <- function(formula, data, B0, split_by, control = list(maxit = 1
 ratio_of_strengths <- function(data, formula, beta) {
     learned <- data$learned
     unknown <- data$unknown
-    d <- model.matrix(formula, data, na.action = "na.omit")
+    d <- model.matrix(formula, data, na.action = "na.fail")
     x <- exp(d %*% as.matrix(beta))
     # x is a matrix with a row for each item and a column for each set of betas.
     # colSums will produce a vector with an element for each set of betas.
