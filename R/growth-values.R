@@ -106,10 +106,15 @@ preferential_attachment <- function(net, known, weighted = FALSE, alpha = 0.5) {
         net <- net[rownames(net) %in% colnames(net), , drop = FALSE]
     }
     diag(net) <- 0
-    gv <- patt(net > 0, known)
-    if (weighted) {
-        gvw <- patt(net, known)
-        gv <- opsahl_weighted_degree(gv, gvw, alpha)
+    if (any(known)) {
+        if (weighted) {
+            gvw <- patt(net, known)
+            gv <- opsahl_weighted_degree(gv, gvw, alpha)
+        } else {
+            gv <- patt(net > 0, known)
+        }
+    } else {
+        gv <- numeric(length(known))
     }
     names(gv) <- colnames(net)
     return(gv)
